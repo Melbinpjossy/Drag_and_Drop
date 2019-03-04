@@ -1,1 +1,1 @@
-# My Super Awesome Music Mixer Project
+# My Awesome Music Mixer Project
