@@ -60,8 +60,16 @@
 			e.preventDefault();
 			console.log("you dropped something on me");
 
-			let piece = e.dataTransfer.getData("text/plain");
-			e.target.appendChild(document.querySelector(`#${piece}`));
+			let boxContent = zone.innerHTML;
+			if(!boxContent) {
+
+			let item = e.dataTransfer.getData("text/plain");
+			e.target.appendChild(document.querySelector(`#${item}`));
+		}
+		else {
+			e.preventDefault();
+		}
+		
 		});
 	})
 
