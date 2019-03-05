@@ -1,18 +1,95 @@
 (() => {
-	// select the element that you want to work with
-	let theButton = document.querySelector("#buttonHolder img");
-	//window.addEventListener("load", changeHeaderText);
+	// variables always come first 
+	// set up the puzzle pieces and boards
+	
 
-	function changeHeaderText() {
-		document.querySelector("h1").testContent = "Hey there from JavaScript"
+	const pieces = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
+
+	let piecesBoard = document.querySelector(".puzzle-pieces"),
+		puzzleBoard = document.querySelector(".puzzle-board"),
+		puzzleSelectors = document.querySelectorAll("#buttonHolder img");
+
+	let dropZones = document.querySelectorAll('.drop-zone');
+	// functions go in the middle
+	function createPuzzlePieces(pictureIndex) {
+		// generate puzzle pieces for left and right side
+		// debugger;
+		pieces.forEach((piece, index) => {
+			let newPuzzlePiece = `<img draggable id="piece${index}" class="puzzle-image" src="images/${piece + pictureIndex}.jpg" alt="thumbnail">`;
+
+			piecesBoard.innerHTML += newPuzzlePiece;
+
+		});
+
+		puzzleBoard.style.backgroundImage = `url(./images/background${pictureIndex}.jpg)`;
+
+		initDrag();
+	} 
+
+
+	// drag and drop functionality goes here
+	
+
+	function initDrag() {
+		piecesBoard.querySelectorAll('img').forEach(img => {
+			img.addEventListener("dragstart", function(e) {
+				console.log('draggin...');
+
+
+				e.dataTransfer.setData("text/plain", this.id);
+			});
+		});
 	}
 
-	// event handling goes at the bottom
-	theButton.addEventListener("click", changeHeaderText);
+
+
+	// handle dragover and drop
 	
-	// set up the puzzle pieces and boards
+	dropZones.forEach(zone =>{
+		zone.addEventListener("dragover", function(e) {
+			e.preventDefault();
+			console.log("you dragged over me");
+		});
+	})
+
+
+	dropZones.forEach(zone =>{
+		zone.addEventListener("drop", function(e) {
+			e.preventDefault();
+			console.log("you dropped something on me");
+
+
+			let boxContent = zone.innerHTML;
+			if(!boxContent) {
+
+			let item = e.dataTransfer.getData("text/plain");
+			e.target.appendChild(document.querySelector(`#${item}`));
+		}
+		else {
+			e.preventDefault();
+		}
+		
+
+			let piece = e.dataTransfer.getData("text/plain");
+			e.target.appendChild(document.querySelector(`#${piece}`));
+
+		});
+	})
+
+	function resetPuzzlePieces() {
+		// empty the thumbnail container
+		piecesBoard.innerHTML = "";
+		dropZones.forEach(zone => zone.innerHTML = "");
+		createPuzzlePieces(this.dataset.puzzleref);
+	}
+
+	// event handling down here
+	puzzleSelectors.forEach(puzzle => puzzle.addEventListener("click", resetPuzzlePieces));
+
+	createPuzzlePieces(0);
+	
+	
+	
 
 })();
-
-
 
