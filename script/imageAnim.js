@@ -10,8 +10,6 @@
 		puzzleSelectors = document.querySelectorAll("#buttonHolder img");
 
 	let dropZones = document.querySelectorAll('.drop-zone');
-
-
 	// functions go in the middle
 	function createPuzzlePieces(pictureIndex) {
 		// generate puzzle pieces for left and right side
@@ -60,14 +58,28 @@
 			e.preventDefault();
 			console.log("you dropped something on me");
 
+
+			let boxContent = zone.innerHTML;
+			if(!boxContent) {
+
+			let item = e.dataTransfer.getData("text/plain");
+			e.target.appendChild(document.querySelector(`#${item}`));
+		}
+		else {
+			e.preventDefault();
+		}
+		
+
 			let piece = e.dataTransfer.getData("text/plain");
 			e.target.appendChild(document.querySelector(`#${piece}`));
+
 		});
 	})
 
 	function resetPuzzlePieces() {
 		// empty the thumbnail container
 		piecesBoard.innerHTML = "";
+		dropZones.forEach(zone => zone.innerHTML = "");
 		createPuzzlePieces(this.dataset.puzzleref);
 	}
 
@@ -78,5 +90,6 @@
 	
 	
 	
+
 })();
 
